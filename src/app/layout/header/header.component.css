@@ -1,0 +1,9 @@
+.pfixed{
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 99;
+}
+.mb80{
+  margin-bottom: 80px;
+}

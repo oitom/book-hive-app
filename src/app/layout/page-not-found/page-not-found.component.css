@@ -1,0 +1,57 @@
+.not-found-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f8f9fa;
+  flex-direction: column;
+}
+
+.message-container {
+  text-align: center;
+  animation: float 4s ease-in-out infinite;
+}
+
+h1 {
+  font-size: 2.5em;
+  color: #212529;
+  margin-bottom: 20px;
+}
+
+p {
+  font-size: 1.2em;
+  color: #6c757d;
+  margin-bottom: 30px;
+}
+
+.btn-primary {
+  font-size: 1.2em;
+  padding: 10px 20px;
+  text-decoration: none;
+  background-color: #212529;
+  color: white;
+  border-radius: 5px;
+  border-color: #212529;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.illustration {
+  width: 300px;
+  margin-bottom: 20px;
+}
+
+/* Animação suave para flutuação */
+@keyframes float {
+  0% {
+    transform: translatey(0px);
+  }
+  50% {
+    transform: translatey(-20px);
+  }
+  100% {
+    transform: translatey(0px);
+  }
+}

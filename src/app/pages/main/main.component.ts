@@ -2,7 +2,7 @@ import { Component, ViewChild, AfterViewInit, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
-import { BookService } from '../services/book.service';
+import { BookService } from '../../services/book.service';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
@@ -12,10 +12,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Book } from '../models/book.model';
+import { Book } from '../../models/book.model';
 import { CommonModule } from '@angular/common';
-import { BookDetailsComponent } from '../book-details/book-details.component';
-import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { BookDetailsComponent } from '../book/book-details/book-details.component';
+import { ConfirmDialogComponent } from '../book/confirm-dialog/confirm-dialog.component';
 import { Router } from '@angular/router';
 
 @Component({

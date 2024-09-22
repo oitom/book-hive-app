@@ -1,18 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { BookService } from '../../../services/book.service';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormArray, AbstractControl, ValidatorFn } from '@angular/forms';
-import { BookService } from '../services/book.service';
-import { Router } from '@angular/router';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 
-
 @Component({
-  selector: 'app-book-form',
-  templateUrl: './book-form.component.html',
-  styleUrls: ['./book-form.component.css'],
+  selector: 'app-book-edit',
+  templateUrl: './book-edit.component.html',
+  styleUrls: ['./book-edit.component.css'],
   standalone: true,
   imports: [
     ReactiveFormsModule,
@@ -23,7 +22,7 @@ import { CommonModule } from '@angular/common';
     CommonModule
   ],
 })
-export class BookFormComponent {
+export class BookEditComponent implements OnInit {
   bookForm: FormGroup;
   autores: any[] = [];
   assuntos: any[] = [];
@@ -31,10 +30,12 @@ export class BookFormComponent {
   erroAssunto: boolean = false;
   erroAutor: boolean = false;
   successMessage: string = '';
+  bookId: number=0;
 
   constructor(
     private fb: FormBuilder,
     private bookService: BookService,
+    private route: ActivatedRoute,
     private router: Router
   ) {
     this.bookForm = this.fb.group({
@@ -48,16 +49,34 @@ export class BookFormComponent {
     });
   }
 
+  ngOnInit(): void {
+    this.bookId = Number(this.route.snapshot.paramMap.get('id'));
+    this.bookService.getBookById(this.bookId).subscribe(response => {
+      const book = response.data.book;
+      this.bookForm.patchValue({
+        titulo: book.titulo,
+        editora: book.editora,
+        edicao: book.edicao,
+        anoPublicacao: book.anoPublicacao,
+        preco: book.preco
+      });
+
+      // Preenche os autores e assuntos
+      this.autores = book.autores;
+      this.assuntos = book.assuntos;
+    });
+  }
+
   onSubmit(): boolean {
     this.submitted = true;
     if (this.bookForm.valid) {
 
-      if(this.autores.length === 0) {
+      if (this.autores.length === 0) {
         this.erroAutor = true;
         return false;
       }
 
-      if(this.assuntos.length === 0) {
+      if (this.assuntos.length === 0) {
         this.erroAssunto = true;
         return false;
       }
@@ -71,21 +90,21 @@ export class BookFormComponent {
       delete payload.assunto;
       delete payload.autor;
 
-      this.bookService.addBook(payload).subscribe(() => {
-        this.successMessage = 'Livro cadastrado com sucesso!';
+      // Chamar o serviço para atualizar o livro
+      this.bookService.updateBook(this.bookId, payload).subscribe(() => {
+        this.successMessage = 'Livro atualizado com sucesso!';
 
         setTimeout(() => {
           this.successMessage = '';
           this.router.navigate(['/']);
-        }, 2000);
-
+        }, 1000);
       });
     } else {
-      if(this.autores.length == 0) {
+      if (this.autores.length == 0) {
         this.erroAutor = true;
       }
 
-      if(this.assuntos.length == 0) {
+      if (this.assuntos.length == 0) {
         this.erroAssunto = true;
       }
 
