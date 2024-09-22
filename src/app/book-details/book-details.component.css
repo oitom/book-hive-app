@@ -1,0 +1,20 @@
+.nopad{
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+}
+.nobg{
+  border: none;
+  background: transparent;
+}
+.close{
+  float: left;
+  background: transparent;
+  font-size: 21px;
+  position: absolute;
+}
+.pad {
+  display: block;
+  width: 100%;
+  min-height: 30px;
+}

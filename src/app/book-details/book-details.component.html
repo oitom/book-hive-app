@@ -1,0 +1,19 @@
+<mat-dialog-content>
+  <mat-dialog-actions class="nopad">
+    <button class="nobg" mat-icon-button mat-dialog-close aria-label="Fechar">
+      <mat-icon  class="close">close</mat-icon>
+    </button>
+  </mat-dialog-actions>
+
+  <h2 mat-dialog-title>Detalhes do Livro</h2>
+  <p><strong>ID:</strong> {{ data.id }}</p>
+  <p><strong>Título:</strong> {{ data.titulo }}</p>
+  <p><strong>Editora:</strong> {{ data.editora }}</p>
+  <p><strong>Edição:</strong> {{ data.edicao }}</p>
+  <p><strong>Ano de Publicação:</strong> {{ data.anoPublicacao }}</p>
+  <p><strong>Preço:</strong> {{ data.preco | currency:'BRL':'symbol':'1.2-2' }}</p>
+  <p><strong>Autores:</strong> {{ data.autores.join(', ') }}</p>
+  <p><strong>Assuntos:</strong> {{ data.assuntos.join(', ') }}</p>
+  <div class="pad"></div>
+</mat-dialog-content>
+

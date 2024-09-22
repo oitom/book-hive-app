@@ -9,20 +9,26 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Book } from '../models/book.model';
+import { CommonModule } from '@angular/common';
+import { BookDetailsComponent } from '../book-details/book-details.component';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-main',
   standalone: true,
   imports: [
+    CommonModule,
     MatTableModule,
     MatSortModule,
     MatPaginatorModule,
     MatInputModule,
     MatButtonModule,
     MatIconModule,
+    MatDialogModule,
     NgFor,
     NgIf,
     FormsModule,
@@ -37,7 +43,7 @@ export class MainComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(private bookService: BookService) {}
+  constructor(private bookService: BookService, private dialog: MatDialog) {}
 
   ngOnInit() {
     this.loadBooks();
@@ -69,7 +75,10 @@ export class MainComponent implements OnInit, AfterViewInit {
   }
 
   visualizarLivro(livro: Book) {
-    console.log('Visualizar livro', livro);
+    this.dialog.open(BookDetailsComponent, {
+      width: '500px',
+      data: livro,
+    });
   }
 
   editarLivro(livro: Book) {
@@ -77,7 +86,26 @@ export class MainComponent implements OnInit, AfterViewInit {
   }
 
   excluirLivro(livro: Book) {
-    console.log('Excluir livro', livro);
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: 'Confirmação de Exclusão',
+        message: `Você realmente deseja excluir o livro "${livro.titulo}"?`
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.bookService.deleteBook(+livro.id).subscribe({
+          next: () => {
+            console.log('Livro excluído com sucesso', livro);
+            this.loadBooks();
+          },
+          error: (error) => {
+            console.error('Erro ao excluir livro', error);
+          },
+        });
+      }
+    });
   }
 
   exportarRelatorio(): void {
@@ -116,6 +144,16 @@ export class MainComponent implements OnInit, AfterViewInit {
   }
 
   exportarPDF(): void {
-    console.log("export pdf")
+    this.bookService.exportarPDF().subscribe((response) => {
+      const blob = new Blob([response], { type: 'application/pdf' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'relatorio-de-livros.pdf';
+      a.click();
+      window.URL.revokeObjectURL(url);
+    }, error => {
+      console.error('Erro ao exportar PDF', error);
+    });
   }
 }
