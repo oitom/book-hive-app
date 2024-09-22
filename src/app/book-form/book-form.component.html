@@ -1,0 +1,123 @@
+<div class="container">
+  <h2>Cadastrar Livro</h2>
+
+  <div *ngIf="successMessage" class="alert alert-success mt-3">
+    {{ successMessage }}
+  </div>
+
+  <form [formGroup]="bookForm" (ngSubmit)="onSubmit()">
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Título</mat-label>
+        <input matInput formControlName="titulo" required>
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="w-48">
+        <mat-label>Editora</mat-label>
+        <input matInput formControlName="editora" required>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-48">
+        <mat-label>Edição</mat-label>
+        <input matInput formControlName="edicao" type="number" required>
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="w-48">
+        <mat-label>Ano de Publicação</mat-label>
+        <input matInput formControlName="anoPublicacao" type="number" required>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-48">
+        <mat-label>Preço</mat-label>
+        <input matInput formControlName="preco" type="number" required>
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Autor</mat-label>
+        <input matInput formControlName="autor">
+
+        <button mat-icon-button matSuffix (click)="addAutor()">
+          <mat-icon>add</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+
+    <div class="form-row top-m">
+      <table class="table table-bordered mt-3" [ngClass]="{'border-error': erroAutor}">
+        <thead>
+          <tr>
+            <th>Autores</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let autor of autores; let i = index">
+            <td>
+              {{ autor }}
+              <button class="del" (click)="removeAutor(i)">x</button>
+            </td>
+          </tr>
+
+          <tr *ngIf="erroAutor">
+            <td><span class="errors">* É necessário pelo menos um Autor.</span></td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+
+
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Assunto</mat-label>
+        <input matInput formControlName="assunto">
+
+        <button mat-icon-button matSuffix (click)="addAssunto()">
+          <mat-icon>add</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+
+    <div class="form-row top-m">
+      <table class="table table-bordered mt-3" [ngClass]="{'border-error': erroAssunto}">
+        <thead>
+          <tr>
+            <th>Assuntos</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let assunto of assuntos; let i = index">
+            <td>
+              {{ assunto }}
+              <button class="del" (click)="removerAssunto(i)">x</button>
+            </td>
+          </tr>
+
+          <tr *ngIf="erroAssunto">
+            <td><span class="errors">* É necessário pelo menos um Assunto.</span></td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+
+
+    <div class="form-actions">
+      <button mat-raised-button color="primary" type="submit">Cadastrar</button>
+    </div>
+  </form>
+
+  <!-- <div *ngIf="submitted && bookForm.get('autores')?.errors?.['atLeastOneRequired']" class="alert alert-danger">
+    É necessário pelo menos um autor.
+  </div>
+  <div *ngIf="submitted && bookForm.get('assuntos')?.errors?.['atLeastOneRequired']" class="alert alert-danger">
+    É necessário pelo menos um assunto.
+  </div> -->
+
+
+</div>

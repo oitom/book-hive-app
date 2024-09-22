@@ -1,0 +1,52 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px auto;
+  max-width: 600px; /* Ajuste o tamanho máximo conforme necessário */
+}
+
+.form-row {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 16px; /* Espaçamento entre linhas */
+}
+
+.w-48 {
+  width: 48%; /* Largura para colunas lado a lado */
+}
+
+.w-100 {
+  width: 100%; /* Largura total para a linha */
+}
+.w-75 {
+  width: 75%; /* Largura total para a linha */
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end; /* Alinha o botão à direita */
+  width: 100%;
+}
+.top-m{
+  margin-top: -52px;
+}
+.del{
+  border: none;
+  border-radius: 14px;
+  font-size: 13px;
+  display: block;
+  float: right;
+  width: 27px;
+  background: #DDD;
+  color: #000000;
+}
+.errors{
+  color: #dc3545;
+  font-size: 13px;
+  font-style: italic;
+}
+.border-error{
+  border-color: #dc3545;
+}

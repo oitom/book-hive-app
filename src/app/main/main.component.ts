@@ -16,6 +16,7 @@ import { Book } from '../models/book.model';
 import { CommonModule } from '@angular/common';
 import { BookDetailsComponent } from '../book-details/book-details.component';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-main',
@@ -43,7 +44,7 @@ export class MainComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(private bookService: BookService, private dialog: MatDialog) {}
+  constructor(private bookService: BookService, private dialog: MatDialog, private router: Router) {}
 
   ngOnInit() {
     this.loadBooks();
@@ -155,5 +156,9 @@ export class MainComponent implements OnInit, AfterViewInit {
     }, error => {
       console.error('Erro ao exportar PDF', error);
     });
+  }
+
+  navigateToCadastro():void {
+    this.router.navigate(['/cadastro']);
   }
 }
