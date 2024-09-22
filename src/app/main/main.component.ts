@@ -82,8 +82,8 @@ export class MainComponent implements OnInit, AfterViewInit {
     });
   }
 
-  editarLivro(livro: Book) {
-    console.log('Editar livro', livro);
+  editarLivro(bookId: number) {
+    this.router.navigate([`/book/edit/${bookId}`]);
   }
 
   excluirLivro(livro: Book) {
@@ -159,6 +159,6 @@ export class MainComponent implements OnInit, AfterViewInit {
   }
 
   navigateToCadastro():void {
-    this.router.navigate(['/cadastro']);
+    this.router.navigate(['/book/create']);
   }
 }

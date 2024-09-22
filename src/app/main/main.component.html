@@ -1,7 +1,7 @@
 <div class="container mt-5">
   <!-- Título e botão de adicionar livro -->
   <div class="d-flex justify-content-between align-items-center mb-3">
-    <h1>Book Hive<br><span>App gerenciamento e livros!</span></h1>
+    <h1>Book Hive<br><span>App gerenciamento de livros!</span></h1>
     <button mat-raised-button color="primary" (click)="navigateToCadastro()">Cadastrar Livro</button>
   </div>
 
@@ -67,7 +67,7 @@
           <button mat-icon-button color="primary" (click)="visualizarLivro(element)">
             <mat-icon>visibility</mat-icon>
           </button>
-          <button mat-icon-button color="accent" (click)="editarLivro(element)">
+          <button mat-icon-button color="accent" (click)="editarLivro(element.id)">
             <mat-icon>edit</mat-icon>
           </button>
           <button mat-icon-button color="warn" (click)="excluirLivro(element)">
