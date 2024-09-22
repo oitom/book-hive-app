@@ -1,0 +1,86 @@
+<div class="container mt-5">
+  <!-- Título e botão de adicionar livro -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>Book Hive<br><span>App gerenciamento e livros!</span></h1>
+    <button mat-raised-button color="primary">Adicionar Livro</button>
+  </div>
+
+  <!-- Barra de pesquisa -->
+  <div class="d-flex mb-3">
+    <mat-form-field appearance="outline" class="flex-grow-1 me-2">
+      <mat-label>Pesquisar livro</mat-label>
+      <input matInput (keyup)="applyFilter($event)">
+    </mat-form-field>
+
+    <button mat-icon-button color="accent" (click)="exportarRelatorio()" aria-label="Exportar Relatório">
+      <mat-icon>file_download</mat-icon>
+    </button>
+
+    <button mat-icon-button color="primary" (click)="exportarPDF()" aria-label="Exportar PDF">
+      <mat-icon>picture_as_pdf</mat-icon>
+    </button>
+  </div>
+
+  <!-- Tabela de livros -->
+  <div class="table-container">
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+      <!-- ID -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+      </ng-container>
+
+      <!-- Título -->
+      <ng-container matColumnDef="titulo">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Título </th>
+        <td mat-cell *matCellDef="let element"> {{element.titulo}} </td>
+      </ng-container>
+
+      <!-- Editora -->
+      <ng-container matColumnDef="editora">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Editora </th>
+        <td mat-cell *matCellDef="let element"> {{element.editora}} </td>
+      </ng-container>
+
+      <!-- Edição -->
+      <ng-container matColumnDef="edicao">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Edição </th>
+        <td mat-cell *matCellDef="let element"> {{element.edicao}} </td>
+      </ng-container>
+
+      <!-- Ano de Publicação -->
+      <ng-container matColumnDef="anoPublicacao">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Ano </th>
+        <td mat-cell *matCellDef="let element"> {{element.anoPublicacao}} </td>
+      </ng-container>
+
+      <!-- Preço -->
+      <ng-container matColumnDef="preco">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Preço </th>
+        <td mat-cell *matCellDef="let element"> {{element.preco}} </td>
+      </ng-container>
+
+      <!-- Ações -->
+      <ng-container matColumnDef="acoes">
+        <th mat-header-cell *matHeaderCellDef> Ações </th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button color="primary" (click)="visualizarLivro(element)">
+            <mat-icon>visibility</mat-icon>
+          </button>
+          <button mat-icon-button color="accent" (click)="editarLivro(element)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="excluirLivro(element)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <!-- Paginação -->
+    <mat-paginator [pageSizeOptions]="[10]" showFirstLastButtons></mat-paginator>
+  </div>
+</div>

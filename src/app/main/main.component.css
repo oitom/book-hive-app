@@ -1,0 +1,29 @@
+.container {
+  max-width: 900px;
+}
+
+.table-responsive {
+  margin-top: 20px;
+}
+.table td button {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+tr.mat-mdc-row:nth-child(odd) {
+  background-color: #f2f2f2;
+}
+tr.mat-mdc-row:nth-child(even) {
+  background-color: #ffffff;
+}
+button {
+  margin-right: 5px;
+}
+td.mat-mdc-cell {
+  font-size: 12px;
+}
+h1>span {
+  font-size: 21px;
+  font-weight: 300;
+  display: block;
+  margin-top: -17px;
+}
