@@ -130,4 +130,8 @@ export class BookFormComponent {
     this.assuntos.splice(index, 1);
     return false;
   }
+
+  goBack(): void {
+    this.router.navigate(['/']);
+  }
 }

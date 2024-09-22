@@ -26,4 +26,16 @@ h1>span {
   font-weight: 300;
   display: block;
   margin-top: -17px;
+  color: #005cbb;
+}
+button.mdc-button.mdc-button--raised.mat-mdc-raised-button.mat-primary.mat-mdc-button-base {
+  background: #005cbb;
+  color: #FFF;
+}
+mat-icon.mat-icon.notranslate.material-icons.mat-ligature-font.mat-icon-no-color {
+  color: #4f525a;
+  font-size: 20px;
+}
+mat-icon.mat-icon.notranslate.material-icons.mat-ligature-font.mat-icon-no-color:hover {
+  color: #005cbb;
 }

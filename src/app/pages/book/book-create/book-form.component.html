@@ -106,18 +106,10 @@
       </table>
     </div>
 
-
-    <div class="form-actions">
+    <div class="form-actions d-flex justify-content-between">
+      <button mat-button color="warn" (click)="goBack()">Voltar</button>
       <button mat-raised-button color="primary" type="submit">Cadastrar</button>
     </div>
   </form>
-
-  <!-- <div *ngIf="submitted && bookForm.get('autores')?.errors?.['atLeastOneRequired']" class="alert alert-danger">
-    É necessário pelo menos um autor.
-  </div>
-  <div *ngIf="submitted && bookForm.get('assuntos')?.errors?.['atLeastOneRequired']" class="alert alert-danger">
-    É necessário pelo menos um assunto.
-  </div> -->
-
 
 </div>

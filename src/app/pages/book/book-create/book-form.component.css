@@ -50,3 +50,7 @@
 .border-error{
   border-color: #dc3545;
 }
+button.mdc-button.mdc-button--raised.mat-mdc-raised-button.mat-primary.mat-mdc-button-base {
+  background: #005cbb;
+  color: #FFF;
+}

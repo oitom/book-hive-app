@@ -149,4 +149,8 @@ export class BookEditComponent implements OnInit {
     this.assuntos.splice(index, 1);
     return false;
   }
+
+  goBack(): void {
+    this.router.navigate(['/']);
+  }
 }
