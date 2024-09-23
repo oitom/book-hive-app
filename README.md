@@ -1,6 +1,8 @@
 # BookHiveApp
-
 Este projeto é uma **Single Page Application (SPA)** desenvolvida com angular  para o gerenciamento de livros.
+
+[![CodeFactor](https://www.codefactor.io/repository/github/oitom/book-hive-app/badge)](https://www.codefactor.io/repository/github/oitom/book-hive-app)
+[![Build](https://github.com/oitom/book-hive-app/actions/workflows/ci.yaml/badge.svg)](https://github.com/oitom/book-hive-app/actions/workflows/ci.yaml)
 
 ---
 

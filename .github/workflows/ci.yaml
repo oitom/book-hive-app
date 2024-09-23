@@ -1,0 +1,24 @@
+name: Angular
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    name: Build Angular Application
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 20.15.0
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build Angular application
+      run: npm run build --configuration=production
