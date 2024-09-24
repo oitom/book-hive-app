@@ -7,7 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
-
+import { CurrencyMaskDirective } from '../../../directives/currency-mask.directive';
 
 @Component({
   selector: 'app-book-form',
@@ -20,7 +20,8 @@ import { CommonModule } from '@angular/common';
     MatFormFieldModule,
     MatButtonModule,
     MatIconModule,
-    CommonModule
+    CommonModule,
+    CurrencyMaskDirective
   ],
 })
 export class BookFormComponent {
@@ -35,17 +36,25 @@ export class BookFormComponent {
   constructor(
     private fb: FormBuilder,
     private bookService: BookService,
-    private router: Router
+    private router: Router,
   ) {
     this.bookForm = this.fb.group({
       titulo: ['', Validators.required],
       editora: ['', Validators.required],
       edicao: [null, Validators.required],
       anoPublicacao: [null, [Validators.required, Validators.min(1900)]],
-      preco: [0, [Validators.required, Validators.min(1)]],
+      preco: [null, [Validators.required, this.validatePreco]],
       autor: [''],
       assunto: [''],
     });
+  }
+
+  validatePreco(control: any) {
+    const value = control.value;
+    if (value === null || value === '' || parseFloat(value.replace('.', '').replace(',', '.')) <= 0) {
+      return { invalidPreco: true };
+    }
+    return null;
   }
 
   onSubmit(): boolean {
@@ -62,8 +71,12 @@ export class BookFormComponent {
         return false;
       }
 
-      let payload = {
+      const precoValue = this.bookForm.value.preco;
+      const precoNumerico = parseFloat(precoValue.replace('.', '').replace(',', '.'));
+
+      const payload = {
         ...this.bookForm.value,
+        preco: precoNumerico,
         anoPublicacao: String(this.bookForm.value.anoPublicacao),
         autores: this.autores.map(nome => ({ nome })),
         assuntos: this.assuntos.map(descricao => ({ descricao }))

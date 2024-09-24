@@ -17,6 +17,10 @@ import { CommonModule } from '@angular/common';
 import { BookDetailsComponent } from '../book/book-details/book-details.component';
 import { ConfirmDialogComponent } from '../book/confirm-dialog/confirm-dialog.component';
 import { Router } from '@angular/router';
+import { LOCALE_ID, inject } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import localePt from '@angular/common/locales/pt';
+registerLocaleData(localePt);
 
 @Component({
   selector: 'app-main',
@@ -34,6 +38,7 @@ import { Router } from '@angular/router';
     NgIf,
     FormsModule,
   ],
+  providers: [{ provide: LOCALE_ID, useValue: 'pt-BR' }],
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.css'],
 })
