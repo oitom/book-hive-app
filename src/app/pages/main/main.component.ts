@@ -131,8 +131,8 @@ export class MainComponent implements OnInit, AfterViewInit {
   }
 
   convertToCSV(data: any[]): string {
-    const header = Object.keys(data[0]).join(',') + '\n';
-    const rows = data.map(item => Object.values(item).join(',')).join('\n');
+    const header = Object.keys(data[0]).join(';') + '\n';
+    const rows = data.map(item => Object.values(item).join(';')).join('\n');
     return header + rows;
   }
 
@@ -142,7 +142,7 @@ export class MainComponent implements OnInit, AfterViewInit {
     const url = URL.createObjectURL(blob);
 
     link.setAttribute('href', url);
-    link.setAttribute('download', 'livros.csv');
+    link.setAttribute('download', 'relatorio-livros.csv');
     link.style.visibility = 'hidden';
     document.body.appendChild(link);
     link.click();
