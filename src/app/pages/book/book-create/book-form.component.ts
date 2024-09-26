@@ -1,13 +1,20 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormArray, AbstractControl, ValidatorFn } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { BookService } from '../../../services/book.service';
 import { Router } from '@angular/router';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { CommonModule } from '@angular/common';
 import { CurrencyMaskDirective } from '../../../directives/currency-mask.directive';
+import { debounceTime, filter, map, switchMap } from 'rxjs/operators';
+import { BookResponse } from './../../../models/bookResponse'
+import { BookItem } from './../../../models/bookItem.model'
+import { fromEvent } from 'rxjs';
+import { HttpResponse } from '@angular/common/http';
+import { Book } from '../../../models/book.model';
 
 @Component({
   selector: 'app-book-form',
@@ -20,6 +27,7 @@ import { CurrencyMaskDirective } from '../../../directives/currency-mask.directi
     MatFormFieldModule,
     MatButtonModule,
     MatIconModule,
+    MatAutocompleteModule,
     CommonModule,
     CurrencyMaskDirective
   ],
@@ -32,6 +40,8 @@ export class BookFormComponent {
   erroAssunto: boolean = false;
   erroAutor: boolean = false;
   successMessage: string = '';
+  errorMessage: string = '';
+  suggestions: string[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -49,24 +59,87 @@ export class BookFormComponent {
     });
   }
 
+  ngOnInit(): void {
+    const tituloInput = this.bookForm.get('titulo');
+
+    if (tituloInput) {
+      const tituloInputElement = document.querySelector('input[formControlName="titulo"]');
+
+      if (tituloInputElement) {
+        fromEvent(tituloInputElement, 'keyup')
+          .pipe(
+            debounceTime(0),
+            map(() => tituloInput.value),
+            filter((value: string) => value.length > 5),
+            switchMap(value => this.bookService.searchBooks(value))
+          )
+          .subscribe((response: BookResponse) => {
+            this.suggestions = response.data?.items?.map((item: BookItem) => item.volumeInfo.title) || [];
+          });
+      }
+    }
+  }
+
+  onSuggestionSelected(suggestion: string) {
+    this.bookService.searchBooks(suggestion)
+      .pipe(
+        switchMap((response: BookResponse) => {
+          const bookItem = response.data?.items?.find(item => item.volumeInfo.title === suggestion);
+          if (bookItem) {
+            this.bookForm.patchValue({
+              editora: bookItem.volumeInfo.publisher || '',
+              edicao: 1,
+              anoPublicacao: bookItem.volumeInfo.publishedDate?.split('-')[0] || '',
+              preco: this.formatarPreco(bookItem.saleInfo?.listPrice?.amount) || null,
+            });
+            this.autores = bookItem.volumeInfo.authors || [];
+            this.assuntos = bookItem.volumeInfo.categories || [];
+          }
+          return [];
+        })
+      )
+      .subscribe();
+  }
+
+  handleInput(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.value.length > 5)
+      this.bookService.searchBooks(input.value);
+  }
+
   validatePreco(control: any) {
     const value = control.value;
-    if (value === null || value === '' || parseFloat(value.replace('.', '').replace(',', '.')) <= 0) {
+
+    if (value === null || value === '') {
       return { invalidPreco: true };
     }
+    if (typeof value === 'number' && value > 0) {
+      return null;
+    }
+    const parsedValue = parseFloat(value.toString().replace('.', '').replace(',', '.'));
+    if (isNaN(parsedValue) || parsedValue <= 0) {
+      return { invalidPreco: true };
+    }
+
     return null;
+  }
+
+  formatarPreco(valor: number): string {
+    if(valor)
+      return valor.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+    return '';
   }
 
   onSubmit(): boolean {
     this.submitted = true;
-    if (this.bookForm.valid) {
 
-      if(this.autores.length === 0) {
+    if (this.bookForm.valid) {
+      if (this.autores.length === 0) {
         this.erroAutor = true;
         return false;
       }
-
-      if(this.assuntos.length === 0) {
+      if (this.assuntos.length === 0) {
         this.erroAssunto = true;
         return false;
       }
@@ -77,41 +150,53 @@ export class BookFormComponent {
       const payload = {
         ...this.bookForm.value,
         preco: precoNumerico,
+        titulo: this.bookForm.value.titulo.length > 38
+          ? this.bookForm.value.titulo.substring(0, 38)
+          : this.bookForm.value.titulo,
         anoPublicacao: String(this.bookForm.value.anoPublicacao),
         autores: this.autores.map(nome => ({ nome })),
         assuntos: this.assuntos.map(descricao => ({ descricao }))
       };
+
       delete payload.assunto;
       delete payload.autor;
 
-      this.bookService.addBook(payload).subscribe(() => {
-        this.successMessage = 'Livro cadastrado com sucesso!';
-
-        setTimeout(() => {
-          this.successMessage = '';
-          this.router.navigate(['/']);
-        }, 2000);
-
+      this.bookService.addBook(payload).subscribe({
+        next: (response: HttpResponse<Book>) => {
+          if (response.status === 201) {
+            this.successMessage = 'Livro cadastrado com sucesso!';
+            setTimeout(() => {
+              this.successMessage = '';
+              this.router.navigate(['/']);
+            }, 2000);
+            return true;
+          } else {
+            this.errorMessage = 'Erro ao cadastrar livro!';
+            return false;
+          }
+        },
+        error: () => {
+          this.errorMessage =  'Erro ao cadastrar livro!';
+          return false;
+        }
       });
+
     } else {
-      if(this.autores.length == 0) {
+      if (this.autores.length === 0) {
         this.erroAutor = true;
       }
-
-      if(this.assuntos.length == 0) {
+      if (this.assuntos.length === 0) {
         this.erroAssunto = true;
       }
-
       const controls = this.bookForm.controls;
       for (const name in controls) {
         if (controls[name].invalid) {
           controls[name].markAsTouched();
         }
       }
-      return false;
-    }
 
-    return true;
+    }
+    return false;
   }
 
   addAutor(): boolean {

@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { map, Observable, of } from 'rxjs';
 import { Book } from '../models/book.model';
 import { environment } from '../../environments/environment'
+import { BookResponse } from './../models/bookResponse'
 
 export interface ApiResponse {
   message: string;
@@ -36,8 +37,8 @@ export class BookService {
     return this.http.get(`${this.apiUrl}/${id}`);
   }
 
-  addBook(livro: Book): Observable<Book> {
-    return this.http.post<Book>(this.apiUrl, livro);
+  addBook(livro: Book): Observable<HttpResponse<Book>> {
+    return this.http.post<Book>(this.apiUrl, livro, { observe: 'response' });
   }
 
   updateBook(id: number, livro: Book): Observable<Book> {
@@ -54,5 +55,13 @@ export class BookService {
     return this.http.get(`${this.apiUrl}/../report?pageSize=${this.pageSize}`, {
       responseType: 'blob',
     });
+  }
+
+  searchBooks(query: string): Observable<BookResponse> {
+    if (query && query.length > 5) {
+      return this.http.get<BookResponse>(`${this.apiUrl}/volumes?search=${query}`);
+    } else {
+      return of({ message: 'success', data: { kind: '', totalItems: 0, items: [] } });
+    }
   }
 }

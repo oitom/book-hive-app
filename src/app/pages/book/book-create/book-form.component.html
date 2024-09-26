@@ -4,43 +4,51 @@
   <div *ngIf="successMessage" class="alert alert-success mt-3">
     {{ successMessage }}
   </div>
+  <div *ngIf="errorMessage" class="alert alert-danger  mt-3">
+    {{ errorMessage }}
+  </div>
 
   <form [formGroup]="bookForm" (ngSubmit)="onSubmit()">
     <div class="form-row">
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Título</mat-label>
-        <input matInput formControlName="titulo" required>
+        <input matInput formControlName="titulo" required [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let suggestion of suggestions" [value]="suggestion" (click)="onSuggestionSelected(suggestion)">
+            {{ suggestion }}
+          </mat-option>
+        </mat-autocomplete>
       </mat-form-field>
     </div>
 
     <div class="form-row">
       <mat-form-field appearance="outline" class="w-48">
         <mat-label>Editora</mat-label>
-        <input matInput formControlName="editora" required>
+        <input id="editora" matInput formControlName="editora" required maxlength="40">
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="w-48">
         <mat-label>Edição</mat-label>
-        <input matInput formControlName="edicao" type="number" required>
+        <input id="edicao" matInput formControlName="edicao" type="number" required>
       </mat-form-field>
     </div>
 
     <div class="form-row">
       <mat-form-field appearance="outline" class="w-48">
         <mat-label>Ano de Publicação</mat-label>
-        <input matInput formControlName="anoPublicacao" type="number" required>
+        <input id="anoPublicacao" matInput formControlName="anoPublicacao" type="number" required  maxlength="4">
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="w-48">
         <mat-label>Preço</mat-label>
-        <input matInput formControlName="preco" type="text" appCurrencyMask required >
+        <input matInput formControlName="preco" type="text" appCurrencyMask required maxlength="8">
       </mat-form-field>
     </div>
 
     <div class="form-row">
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Autor</mat-label>
-        <input matInput formControlName="autor">
+        <input matInput formControlName="autor" maxlength="40">
 
         <button mat-icon-button matSuffix (click)="addAutor()">
           <mat-icon>add</mat-icon>
@@ -75,7 +83,7 @@
     <div class="form-row">
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Assunto</mat-label>
-        <input matInput formControlName="assunto">
+        <input matInput formControlName="assunto" maxlength="20">
 
         <button mat-icon-button matSuffix (click)="addAssunto()">
           <mat-icon>add</mat-icon>
