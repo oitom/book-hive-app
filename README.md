@@ -79,15 +79,5 @@ ng serve
 - Autenticação e Autorização: 
 Implementar controle de usuários com base em JWT e diferentes níveis de permissões.
 
-- Validação Avançada: Melhorar as validações de formulários com Angular Reactive Forms, fornecendo feedback ao usuário em tempo real.
-
-- Paginação e Filtros: Adicionar filtros e paginação na listagem de livros para melhorar a experiência de navegação e a busca de dados.
-
-- Internacionalização (i18n): Incluir suporte a múltiplos idiomas, permitindo que a interface seja acessível a diferentes públicos.
-
-### Funcionalidades Futuras
-- Integração com APIs Externas: Conectar a aplicação com serviços externos, como a Google Books API, para importar informações detalhadas sobre livros.
-
-- Exportação de Dados: Adicionar a opção de exportar a lista de livros em formatos CSV e PDF.
-
-- Notificações em Tempo Real: Integrar WebSockets para enviar notificações de atualizações de livros em tempo real.
+- Internacionalização (i18n): 
+Incluir suporte a múltiplos idiomas, permitindo que a interface seja acessível a diferentes públicos.
