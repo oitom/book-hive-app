@@ -66,7 +66,7 @@ ng serve
 
 ### Page Cadastro Livros
 ![Tela cadastro](/public/assets/page-cadastrar-livro.png)
-![Tela cadastro](/public/assets/page-cadastrar-livro-2.png)
+![Tela cadastro](/public/assets/page-cadastrar-livro-com-sugestoes.png)
 
 ### Page Edição Livros
 ![Tela edição](/public/assets/page-editar-livro.png)
